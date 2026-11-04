@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#0B0E14]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreditLens — Credit Risk Assessment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="h-full text-slate-200 font-sans antialiased bg-[#0B0E14] flex flex-col selection:bg-emerald-500/30 selection:text-emerald-200">
+  <!-- Top Navigation Header -->
+  <header class="border-b border-slate-800/80 bg-[#0F151D]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-mono font-bold text-slate-950 text-lg shadow-sm">
+          CL
+        </div>
+        <div>
+          <span class="font-semibold tracking-tight text-white text-lg">CreditLens</span>
+          <span class="ml-2 text-xs font-mono px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/50">Risk Engine v2.4</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button id="btn-preset-low" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 rounded border border-slate-700 transition">
+          Load Sample: Low Risk
+        </button>
+        <button id="btn-preset-high" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 rounded border border-slate-700 transition">
+          Load Sample: High Risk
+        </button>
+        <button id="btn-reset" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 rounded border border-slate-800 transition">
+          Reset Form
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout (Two Columns on Desktop) -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Loan Application Form -->
+      <section class="lg:col-span-7 bg-[#131B24] border border-slate-800/90 rounded-xl shadow-xl overflow-hidden">
+        <div class="px-6 py-5 border-b border-slate-800/80 flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-semibold text-white tracking-wide">Applicant Assessment Form</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Enter financial and credit parameters for calibrated model evaluation.</p>
+          </div>
+          <span class="text-xs font-mono text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded border border-slate-800">
+            POST /predict
+          </span>
+        </div>
+
+        <form id="risk-form" class="p-6 space-y-6" autocomplete="off">
+          
+          <!-- SECTION 1: Personal & Credit Profile -->
+          <div>
+            <div class="flex items-center space-x-2 border-b border-slate-800 pb-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-300">Personal & Credit Profile</h3>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Age -->
+              <div>
+                <label for="person_age" class="block text-xs font-medium text-slate-300 mb-1">
+                  Age <span class="text-emerald-400">*</span>
+                </label>
+                <input type="number" id="person_age" name="person_age" required min="18" max="100" value="28"
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+              </div>
+
+              <!-- Annual Income -->
+              <div>
+                <label for="person_income" class="block text-xs font-medium text-slate-300 mb-1">
+                  Annual Income ($) <span class="text-emerald-400">*</span>
+                </label>
+                <input type="number" id="person_income" name="person_income" required min="1000" step="500" value="75000"
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+              </div>
+
+              <!-- Home Ownership -->
+              <div>
+                <label for="person_home_ownership" class="block text-xs font-medium text-slate-300 mb-1">
+                  Home Ownership <span class="text-emerald-400">*</span>
+                </label>
+                <select id="person_home_ownership" name="person_home_ownership" required
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                  <option value="RENT">RENT</option>
+                  <option value="MORTGAGE" selected>MORTGAGE</option>
+                  <option value="OWN">OWN</option>
+                  <option value="OTHER">OTHER</option>
+                </select>
+              </div>
+
+              <!-- Employment Length -->
+              <div>
+                <label for="person_emp_length" class="block text-xs font-medium text-slate-300 mb-1">
+                  Employment Length (Years) <span class="text-emerald-400">*</span>
+                </label>
+                <input type="number" id="person_emp_length" name="person_emp_length" required min="0" max="60" step="0.5" value="5.0"
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+              </div>
+
+              <!-- Credit History Length -->
+              <div>
+                <label for="cb_person_cred_hist_length" class="block text-xs font-medium text-slate-300 mb-1">
+                  Credit History Length (Years) <span class="text-emerald-400">*</span>
+                </label>
+                <input type="number" id="cb_person_cred_hist_length" name="cb_person_cred_hist_length" required min="0" max="50" value="6"
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+              </div>
+
+              <!-- Historical Default -->
+              <div>
+                <label for="cb_person_default_on_file" class="block text-xs font-medium text-slate-300 mb-1">
+                  Historical Default on File <span class="text-emerald-400">*</span>
+                </label>
+                <select id="cb_person_default_on_file" name="cb_person_default_on_file" required
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                  <option value="N" selected>No (N)</option>
+                  <option value="Y">Yes (Y)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: Loan Details -->
+          <div>
+            <div class="flex items-center space-x-2 border-b border-slate-800 pb-2 mb-4">
+              <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-300">Loan Details</h3>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Loan Intent -->
+              <div>
+                <label for="loan_intent" class="block text-xs font-medium text-slate-300 mb-1">
+                  Loan Intent <span class="text-emerald-400">*</span>
+                </label>
+                <select id="loan_intent" name="loan_intent" required
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                  <option value="PERSONAL" selected>PERSONAL</option>
+                  <option value="EDUCATION">EDUCATION</option>
+                  <option value="MEDICAL">MEDICAL</option>
+                  <option value="VENTURE">VENTURE</option>
+                  <option value="HOMEIMPROVEMENT">HOME IMPROVEMENT</option>
+                  <option value="DEBTCONSOLIDATION">DEBT CONSOLIDATION</option>
+                </select>
+              </div>
+
+              <!-- Loan Grade -->
+              <div>
+                <label for="loan_grade" class="block text-xs font-medium text-slate-300 mb-1">
+                  Loan Grade <span class="text-emerald-400">*</span>
+                </label>
+                <select id="loan_grade" name="loan_grade" required
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                  <option value="A" selected>Grade A</option>
+                  <option value="B">Grade B</option>
+                  <option value="C">Grade C</option>
+                  <option value="D">Grade D</option>
+                  <option value="E">Grade E</option>
+                  <option value="F">Grade F</option>
+                  <option value="G">Grade G</option>
+                </select>
+              </div>
+
+              <!-- Loan Amount -->
+              <div>
+                <label for="loan_amnt" class="block text-xs font-medium text-slate-300 mb-1">
+                  Loan Amount ($) <span class="text-emerald-400">*</span>
+                </label>
+                <input type="number" id="loan_amnt" name="loan_amnt" required min="500" step="250" value="12000"
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+              </div>
+
+              <!-- Interest Rate -->
+              <div>
+                <label for="loan_int_rate" class="block text-xs font-medium text-slate-300 mb-1">
+                  Interest Rate (%) <span class="text-emerald-400">*</span>
+                </label>
+                <input type="number" id="loan_int_rate" name="loan_int_rate" required min="1" max="40" step="0.01" value="10.99"
+                  class="w-full bg-[#0B0E14] border border-slate-700/80 rounded-md px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
+              </div>
+
+              <!-- Auto-Calculated Ratio (Readonly UI + Hidden Payload Input) -->
+              <div class="sm:col-span-2 bg-[#0B0E14]/60 p-3.5 rounded-lg border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="block text-xs font-medium text-slate-300">Loan-to-Income Ratio (Auto-Calculated)</span>
+                  <span class="block text-[11px] text-slate-400 mt-0.5">Calculated as (Loan Amount ÷ Annual Income). Sent to API as decimal ratio.</span>
+                </div>
+                <div class="text-right">
+                  <span id="loan_percent_income_display" class="font-mono text-base font-bold text-emerald-400">16.00%</span>
+                  <span id="loan_percent_income_decimal" class="block text-[10px] font-mono text-slate-400">(Ratio: 0.1600)</span>
+                  <input type="hidden" id="loan_percent_income" name="loan_percent_income" value="0.16">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button type="submit" id="btn-submit"
+              class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-md shadow transition flex items-center justify-center space-x-2">
+              <span id="btn-text">Run Risk Evaluation</span>
+              <svg id="btn-spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: Semicircular Speedometer & Evaluation Output -->
+      <section class="lg:col-span-5 space-y-6">
+        
+        <!-- Risk Gauge Card -->
+        <div class="bg-[#131B24] border border-slate-800/90 rounded-xl shadow-xl p-6 relative">
+          
+          <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300">Calibrated Risk Speedometer</h2>
+            <div id="status-tag" class="px-2.5 py-0.5 rounded text-[11px] font-mono bg-slate-800 text-slate-400 border border-slate-700">
+              Ready
+            </div>
+          </div>
+
+          <!-- Speedometer Container -->
+          <div class="relative flex flex-col items-center justify-center py-4">
+            
+            <!-- SVG Semicircular Gauge -->
+            <div class="w-full max-w-[340px] aspect-[2/1] relative">
+              <svg viewBox="0 0 200 115" class="w-full h-full overflow-visible">
+                <!-- Outer Shadow Arc -->
+                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#0B0E14" stroke-width="18" stroke-linecap="round"/>
+
+                <!-- Gauge Track (Background) -->
+                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#1A2430" stroke-width="14" stroke-linecap="round"/>
+
+                <!-- Green Arc Segment (0% to Threshold) -->
+                <path id="gauge-green-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#10B981" stroke-width="14" stroke-linecap="round" opacity="0.3" />
+
+                <!-- Red Arc Segment (Threshold to 100%) -->
+                <path id="gauge-red-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#EF4444" stroke-width="14" stroke-linecap="round" opacity="0.3" />
+
+                <!-- Dynamic Progress Fill -->
+                <path id="gauge-progress-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#10B981" stroke-width="14" stroke-linecap="round" stroke-dasharray="251.32" stroke-dashoffset="251.32" class="transition-all duration-1000 ease-out" />
+
+                <!-- Decision Threshold Line Marker -->
+                <g id="threshold-marker-group">
+                  <line id="threshold-marker-line" x1="100" y1="100" x2="100" y2="20" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="3,3" />
+                  <circle id="threshold-marker-dot" cx="100" cy="20" r="3.5" fill="#F59E0B" />
+                </g>
+
+                <!-- Center Pivot -->
+                <circle cx="100" cy="100" r="7" fill="#1E293B" stroke="#0B0E14" stroke-width="2"/>
+                <circle cx="100" cy="100" r="3" fill="#E2E8F0"/>
+
+                <!-- Dynamic Dynamic Needle -->
+                <g id="needle-group" class="transition-transform duration-1000 ease-out" style="transform-origin: 100px 100px; transform: rotate(-90deg);">
+                  <line x1="100" y1="100" x2="100" y2="26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                  <polygon points="96,100 104,100 100,22" fill="#FFFFFF" />
+                  <circle cx="100" cy="100" r="4" fill="#FFFFFF"/>
+                </g>
+              </svg>
+
+              <!-- Threshold Marker Label Callout (Positioned Intelligently & Dynamically) -->
+              <div id="threshold-badge" class="absolute px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-950/90 text-amber-300 border border-amber-500/50 shadow-md whitespace-nowrap pointer-events-none transition-all duration-500" style="left: 65%; top: 5%;">
+                Threshold: <span id="threshold-badge-val">65.0%</span>
+              </div>
+            </div>
+
+            <!-- Gauge Scale Labels -->
+            <div class="w-full max-w-[340px] flex justify-between text-[11px] font-mono text-slate-400 mt-1 px-2">
+              <span>0% (Safe)</span>
+              <span class="text-amber-400 font-semibold">Threshold Cutoff</span>
+              <span>100% (Default)</span>
+            </div>
+
+            <!-- Main Dynamic Probability Display -->
+            <div class="mt-4 text-center">
+              <span class="block text-xs font-medium text-slate-400 uppercase tracking-wider">Model Default Probability</span>
+              <div class="flex items-baseline justify-center space-x-1 mt-1">
+                <span id="prob-percentage" class="text-4xl font-extrabold font-mono text-white tracking-tight">0.0</span>
+                <span class="text-xl font-mono text-slate-400">%</span>
+              </div>
+              <p id="prob-raw-decimal" class="text-[11px] font-mono text-slate-400 mt-0.5">Raw Probability: 0.0000</p>
+            </div>
+          </div>
+
+          <!-- Risk Classification Verdict Banner -->
+          <div id="classification-banner" class="mt-4 p-4 rounded-lg border bg-slate-900/60 border-slate-800 text-center transition-all duration-500">
+            <span class="block text-xs uppercase tracking-widest text-slate-400 font-medium mb-1">Risk Classification</span>
+            <span id="classification-text" class="text-2xl font-black font-mono tracking-wider text-slate-300">AWAITING INPUT</span>
+            <p id="classification-subtext" class="text-xs text-slate-400 mt-1">Submit the loan application form to trigger assessment.</p>
+          </div>
+        </div>
+
+        <!-- Assessment Breakdown & History -->
+        <div class="bg-[#131B24] border border-slate-800/90 rounded-xl shadow-xl p-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-300">Recent Assessments History</h3>
+            <span class="text-[10px] font-mono text-slate-400">Session Log</span>
+          </div>
+
+          <div id="history-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+            <div class="text-center py-6 text-xs text-slate-400 italic" id="empty-history-msg">
+              No recent risk evaluations recorded yet.
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Script Embed -->
+  <script src="app.js"></script>
+</body>
+</html>
