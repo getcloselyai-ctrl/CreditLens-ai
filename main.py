@@ -15,7 +15,7 @@ from pydantic import BaseModel
 # --------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "credit_Risk_model.pkl"
+MODEL_PATH = BASE_DIR / "credit_risk_model.pkl"
 THRESHOLD_PATH = BASE_DIR / "best_threshold.pkl"
 STATIC_DIR = BASE_DIR / "static"
 
