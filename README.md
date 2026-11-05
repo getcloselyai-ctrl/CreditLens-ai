@@ -1,63 +1,98 @@
-💳 CreditLens — Credit Risk Prediction
+# 💳 CreditLens — Credit Risk Prediction
 
 <p align="center">
-  <a href="https://creditlens-ai-6jlq.onrender.com">
-    <img src="https://img.shields.io/badge/🚀_LIVE_DEMO-TRY_CREDITLENS-00C853?style=for-the-badge" alt="Try CreditLens"/>
+  <a href="https://creditlens-ai-36iw.onrender.com">
+    <img src="https://img.shields.io/badge/🚀_LIVE_DEMO-TRY_CREDITLENS-FFFFFF?style=for-the-badge&labelColor=15803D" alt="Live Demo"/>
   </a>
-</p>An ML-powered web application that predicts borrower credit default risk using financial and credit-related information.
+</p>
 
-✨ Features
+<p align="center">
+  An ML-powered application that predicts borrower credit default risk using financial and credit-related information.
+</p>
+
+---
+
+### ✨ Features
 
 - Credit default probability prediction
 - Calibrated machine learning model
 - Optimized classification threshold
 - Interactive web interface
 - FastAPI-powered prediction API
+- Cloud deployment on Render
 
-🧠 Machine Learning
+### 🧠 Machine Learning
 
-- Model: CalibratedClassifierCV
-- Libraries: Scikit-learn, XGBoost
-- Threshold: 0.6499
-- Output: High Risk / Low Risk
+| Component | Details |
+|---|---|
+| Model | CalibratedClassifierCV |
+| ML Libraries | Scikit-learn, XGBoost |
+| Decision Threshold | 0.6499 |
+| Prediction | High Risk / Low Risk |
 
-🛠️ Tech Stack
+**Input features:** Age, income, home ownership, employment length, loan amount, interest rate, loan grade, loan intent and credit history.
 
-Python · Pandas · NumPy · Scikit-learn · XGBoost · FastAPI · HTML · CSS · JavaScript · Render
+### 🛠️ Tech Stack
 
-🏗️ Architecture
+**Python** · Pandas · NumPy · Scikit-learn · XGBoost · FastAPI · Uvicorn · HTML · CSS · JavaScript · Render
 
-User Input
-    ↓
+### 🏗️ Architecture
+
+```text
+Borrower Information
+        ↓
 Frontend Interface
-    ↓
+        ↓
 FastAPI Backend
-    ↓
+        ↓
 Calibrated ML Model
-    ↓
+        ↓
 Default Probability
-    ↓
-Risk Classification
+        ↓
+Threshold Classification
+        ↓
+Credit Risk Result
+```
 
-⚙️ Run Locally
+### 📂 Project Structure
 
+```text
+CreditLens-ai/
+│
+├── main.py
+├── credit_risk_model.pkl
+├── best_threshold.pkl
+├── requirements.txt
+│
+├── static/
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+│
+└── README.md
+```
+
+### ⚙️ Run Locally
+
+```bash
 git clone https://github.com/getcloselyai-ctrl/CreditLens-ai.git
 cd CreditLens-ai
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
 
-Open "http://127.0.0.1:8000"
+Open `http://127.0.0.1:8000` in your browser.
 
-🌐 Live Demo
+### 👨‍💻 Author
 
-"🚀 Launch CreditLens" (https://creditlens-ai-6jlq.onrender.com)
+**Akshat Doshi**
 
-👨‍💻 Author
-
-Akshat Doshi · "GitHub Profile" (https://github.com/getcloselyai-ctrl)
+<a href="https://github.com/getcloselyai-ctrl">
+  <img src="https://img.shields.io/badge/👨‍💻_GITHUB-VISIT_PROFILE-FFFFFF?style=for-the-badge&labelColor=15803D" alt="GitHub Profile"/>
+</a>
 
 ---
 
 <p align="center">
-  Turning Data Into Intelligent Risk Predictions.
+  <strong>CreditLens — Turning Data Into Intelligent Risk Predictions.</strong>
 </p>
